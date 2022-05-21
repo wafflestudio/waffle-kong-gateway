@@ -1,0 +1,14 @@
+{
+  "name": "waffle-account-authorizer",
+  "version": "1.0.0",
+  "description": "AWS Lambda code for waffle account server",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
