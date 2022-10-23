@@ -12,7 +12,7 @@ class KongPlugin {
 
     async access(kong) {
         let authorization = await kong.request.getHeader("authorization")
-        if (authorization === undefined || !authorization.startsWIth("Bearer ")) {
+        if (authorization === undefined || !authorization.startsWith("Bearer ")) {
             return;
         }
 
@@ -24,7 +24,6 @@ class KongPlugin {
                 kong.response.setHeader("waffle-user-id", decoded.sub),
             ])
         } catch (err) {
-            console.log(err);
             return kong.response.exit(403);
         }
     }
