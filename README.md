@@ -1,5 +1,5 @@
 # waffle-kong-gateway
-## kong-gateway with waffle plugins
+## kong-gateway with wafflestudio plugins
 
 ### js - waffle-jwt-authorizer
 `WAFFLE_JWT_ISSUER`, `WAFFLE_JWT_PUBLIC_KEY`를 포함한 `.env`가 존재해야 하며, 다음의 동작을 수행합니다.
