@@ -1,6 +1,6 @@
 'use strict';
 
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----';
 const issuer = process.env.WAFFLE_JWT_ISSUER;
