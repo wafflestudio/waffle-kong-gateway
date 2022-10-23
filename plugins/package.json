@@ -1,7 +1,7 @@
 {
-  "name": "waffle-account-authorizer",
+  "name": "waffle-jwt-authorizer",
   "version": "1.0.0",
-  "description": "AWS Lambda code for waffle account server",
+  "description": "waffle-jwt-authorizer",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
