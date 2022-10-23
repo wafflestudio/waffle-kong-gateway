@@ -18,7 +18,7 @@ class KongPlugin {
         try {
             payload = jwt.verify(accessToken, process.env.WAFFLE_JWT_PUBLIC_KEY, { algorithms: ['RS512'], issuer: process.env.WAFFLE_JWT_ISSUER });
         } catch (err) {
-            if (err instanceof jwt.TokenExpiredError || err instanceof jwt.JsonWebTokenError) {
+            if (err instanceof jwt.TokenExpiredError) {
                 return kong.response.exit(403);
             }
             throw err;
