@@ -11,18 +11,20 @@ class KongPlugin {
     }
 
     async access(kong) {
-        let accessToken = await kong.request.getHeader("authorization")
-        if (accessToken === undefined) {
-            return kong.response.exit(403);
+        let authorization = await kong.request.getHeader("authorization")
+        if (authorization === undefined || !authorization.startsWIth("Bearer ")) {
+            return;
         }
 
+        let accessToken = authorization.substring(7)
         try {
             let decoded = jwt.verify(accessToken, key, { algorithms: ["RS512"] });
             if (decoded.iss !== issuer) return kong.response.exit(403);
             return await Promise.all([
-                kong.response.setHeader("x-javascript-pid", process.pid),
+                kong.response.setHeader("waffle-user-id", decoded.sub),
             ])
         } catch (err) {
+            console.log(err);
             return kong.response.exit(403);
         }
     }
