@@ -34,7 +34,7 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
             --build-arg WAFFLE_JWT_ISSUER="https://account-api-dev.wafflestudio.com" \
-            --build-arg WAFFLE_JWT_PUBLIC_KEY=${{ secrets.DEV_JWT_PUBLIC_KEY }} \
+            --build-arg WAFFLE_JWT_PUBLIC_KEY="${{ secrets.DEV_JWT_PUBLIC_KEY }}" \
             .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
