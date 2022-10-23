@@ -1,9 +1,8 @@
 FROM kong/kong-gateway:3.0.0.0-alpine
 USER root
 
-RUN apk update && apk add nodejs npm && npm install
 COPY ./plugins /usr/local/kong/js-plugins
-RUN npm install -g kong-pdk@0.5.3
+RUN apk update && apk add nodejs npm && npm install --prefix /usr/local/kong/js-plugins && npm install -g kong-pdk@0.5.3
 
 USER kong
 
