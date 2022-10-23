@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create .env
-        run: echo "${{ secrets.NODE_ENV_FILE }}" > ./plugins/.env
+        run: echo "${{ secrets.JS_ENV_FILE }}" > ./plugins/.env
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
