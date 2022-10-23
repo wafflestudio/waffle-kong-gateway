@@ -20,9 +20,9 @@ class KongPlugin {
         try {
             let decoded = jwt.verify(accessToken, key, { algorithms: ["RS512"] });
             if (decoded.iss !== issuer) return kong.response.exit(403);
-            return await Promise.all([
+            await Promise.all([
                 kong.service.request.setHeader("waffle-user-id", decoded.sub),
-            ])
+            ]);
         } catch (err) {
             return kong.response.exit(403);
         }
