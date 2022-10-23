@@ -1,13 +1,13 @@
 'use strict';
 
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----'
-const issuer = process.env.WAFFLE_JWT_ISSUER
+const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----';
+const issuer = process.env.WAFFLE_JWT_ISSUER;
 
 class KongPlugin {
     constructor(config) {
-        this.config = config
+        this.config = config;
     }
 
     async access(kong) {
@@ -16,15 +16,17 @@ class KongPlugin {
             return;
         }
 
-        let accessToken = authorization.substring(7)
+        let accessToken = authorization.substring(7);
         try {
-            let decoded = jwt.verify(accessToken, key, { algorithms: ["RS512"] });
-            if (decoded.iss !== issuer) return kong.response.exit(403);
+            let decoded = jwt.verify(accessToken, key, { algorithms: ["RS512"], issuer: issuer });
             await Promise.all([
                 kong.service.request.setHeader("waffle-user-id", decoded.sub),
             ]);
         } catch (err) {
-            return kong.response.exit(403);
+            if (err instanceof jwt.TokenExpiredError || err instanceof jwt.JsonWebTokenError) {
+                return kong.response.exit(403);
+            }
+            throw err;
         }
     }
 }
