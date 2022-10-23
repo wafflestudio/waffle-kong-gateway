@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 const jwt = require('jsonwebtoken');
 
 const publicKey = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----';
