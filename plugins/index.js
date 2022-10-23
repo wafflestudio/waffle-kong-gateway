@@ -2,9 +2,6 @@
 
 const jwt = require('jsonwebtoken');
 
-const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----';
-const issuer = process.env.WAFFLE_JWT_ISSUER;
-
 class KongPlugin {
     constructor(config) {
         this.config = config;
@@ -19,7 +16,7 @@ class KongPlugin {
         let accessToken = authorization.substring(7);
         let payload;
         try {
-            payload = jwt.verify(accessToken, key, { algorithms: ['RS512'], issuer: issuer });
+            payload = jwt.verify(accessToken, process.env.WAFFLE_JWT_PUBLIC_KEY, { algorithms: ['RS512'], issuer: process.env.WAFFLE_JWT_ISSUER });
         } catch (err) {
             if (err instanceof jwt.TokenExpiredError || err instanceof jwt.JsonWebTokenError) {
                 return kong.response.exit(403);
