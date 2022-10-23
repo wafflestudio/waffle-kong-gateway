@@ -2,8 +2,8 @@
 
 const jwt = require('jsonwebtoken');
 
-const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----'
-const issuer = process.env.ISSUER
+const key = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----'
+const issuer = process.env.WAFFLE_JWT_ISSUER
 
 class KongPlugin {
     constructor(config) {
