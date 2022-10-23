@@ -17,17 +17,16 @@ class KongPlugin {
         }
 
         let accessToken = authorization.substring(7);
+        let payload;
         try {
-            let decoded = jwt.verify(accessToken, key, { algorithms: ["RS512"], issuer: issuer });
-            await Promise.all([
-                kong.service.request.setHeader("waffle-user-id", decoded.sub),
-            ]);
+            payload = jwt.verify(accessToken, key, { algorithms: ['RS512'], issuer: issuer });
         } catch (err) {
             if (err instanceof jwt.TokenExpiredError || err instanceof jwt.JsonWebTokenError) {
                 return kong.response.exit(403);
             }
             throw err;
         }
+        await kong.service.request.setHeader('waffle-user-id', payload.sub);
     }
 }
 
