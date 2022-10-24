@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const publicKey = '-----BEGIN PUBLIC KEY-----\n' + process.env.WAFFLE_JWT_PUBLIC_KEY + '\n-----END PUBLIC KEY-----';
 const issuer = process.env.WAFFLE_JWT_ISSUER;
+const authPrefix = "Bearer "
 
 class KongPlugin {
     constructor(config) {
@@ -13,12 +14,12 @@ class KongPlugin {
     }
 
     async access(kong) {
-        let authorization = await kong.request.getHeader("authorization")
-        if (authorization === undefined || !authorization.startsWith("Bearer ")) {
+        const authorization = await kong.request.getHeader("authorization")
+        if (authorization === undefined || !authorization.startsWith(authPrefix)) {
             return;
         }
 
-        let accessToken = authorization.substring(7);
+        const accessToken = authorization.substring(authPrefix.length);
         let payload;
         try {
             payload = jwt.verify(accessToken, publicKey, { algorithms: ['RS512'], issuer: issuer });
