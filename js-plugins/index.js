@@ -13,11 +13,14 @@ class KongPlugin {
 
     async access(kong) {
         const waffleUserId = await kong.request.getHeader("waffle-user-id");
+        // block requests with manual 'waffle-user-id' header
         if (waffleUserId != undefined) {
             return kong.response.exit(403);
         }
 
         const authorization = await kong.request.getHeader("authorization")
+        // allow requests without 'authorization' header because some apis may be public
+        // each service can choose to allow or block requests without 'waffle-user-id' header per api
         if (authorization === undefined || !authorization.startsWith(authPrefix)) {
             return;
         }
