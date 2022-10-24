@@ -7,9 +7,11 @@
     "test": "node index.js"
   },
   "author": "davin111 <bdv111@wafflestudio.com>",
+  "contributors": [
+    "woohm402 <woohm402@snu.ac.kr>"
+  ],
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.0.3",
     "jsonwebtoken": "^8.5.1"
   }
 }
