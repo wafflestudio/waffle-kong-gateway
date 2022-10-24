@@ -13,7 +13,7 @@ class KongPlugin {
 
     async access(kong) {
         const waffleUserId = await kong.request.getHeader("waffle-user-id");
-        if (typeof waffleUserId !== "string") {
+        if (waffleUserId != undefined) {
             return kong.response.exit(403);
         }
 
