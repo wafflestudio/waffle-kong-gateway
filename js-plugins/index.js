@@ -12,7 +12,7 @@ class KongPlugin {
     }
 
     async access(kong) {
-        const waffleUserId = await kong.request.get_header("waffle-user-id");
+        const waffleUserId = await kong.request.getHeader("waffle-user-id");
         if (waffleUserId !== null || waffleUserId !== undefined) {
             return kong.response.exit(403);
         }
