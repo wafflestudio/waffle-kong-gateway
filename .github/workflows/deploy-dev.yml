@@ -18,9 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Create .env
-        run: echo "${{ secrets.JS_ENV_FILE }}" > ./plugins/.env
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,7 +32,10 @@ jobs:
       - name: Docker Build, tag, and push image to ECR
         id: build-image
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+             --build-arg WAFFLE_JWT_ISSUER="${{ secrets.DEV_JWT_ISSUER }}" \
+             --build-arg WAFFLE_JWT_PUBLIC_KEY="${{ secrets.DEV_JWT_PUBLIC_KEY }}" \
+             .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
