@@ -1,18 +1,18 @@
-name: Deploy-dev
+name: Deploy-prod
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 jobs:
   deploy:
-    name: Deploy-dev
+    name: Deploy-prod
     runs-on: ubuntu-latest
     env:
       IMAGE_TAG: ${{ github.run_number }}
       BUILD_NUMBER: ${{ github.run_number }}
       ECR_REGISTRY: 405906814034.dkr.ecr.ap-northeast-2.amazonaws.com
-      ECR_REPOSITORY: sso-dev/kong-gateway
+      ECR_REPOSITORY: sso-prod/kong-gateway
 
     steps:
       - name: Checkout
@@ -33,8 +33,8 @@ jobs:
         id: build-image
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-             --build-arg WAFFLE_JWT_ISSUER="${{ secrets.DEV_JWT_ISSUER }}" \
-             --build-arg WAFFLE_JWT_PUBLIC_KEY="${{ secrets.DEV_JWT_PUBLIC_KEY }}" \
+             --build-arg WAFFLE_JWT_ISSUER="${{ secrets.PROD_JWT_ISSUER }}" \
+             --build-arg WAFFLE_JWT_PUBLIC_KEY="${{ secrets.PROD_JWT_PUBLIC_KEY }}" \
              .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
@@ -45,7 +45,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: team-sso
           SLACK_TITLE: NEW RELEASE
-          SLACK_USERNAME: kong-gateway-dev
+          SLACK_USERNAME: kong-gateway
           SLACK_ICON: https://user-images.githubusercontent.com/35535636/158051666-322decf3-c7d9-414d-a9bd-ec172054ab96.png
           SLACK_MESSAGE: Check <https://argocd.wafflestudio.com|Argo CD> for updated environment
-          SLACK_FOOTER: https://api-gateway-dev.wafflestudio.com
+          SLACK_FOOTER: https://api-gateway.wafflestudio.com
